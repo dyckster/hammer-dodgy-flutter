@@ -1,8 +1,8 @@
-import 'package:hammer_dodgy/mapper/RestrictedContentUiMapper.dart';
-import 'package:hammer_dodgy/models/ui/RestrictedContentUiModel.dart';
+import 'package:hammer_dodgy/mapper/restricted_content_ui_mapper.dart';
+import 'package:hammer_dodgy/models/ui/restricted_content_ui_model.dart';
 
-import '../models/api/MovieApiModel.dart';
-import '../models/ui/MovieUiModel.dart';
+import '../models/api/movie_api_model.dart';
+import '../models/ui/movie_ui_model.dart';
 
 class MovieUiMapper {
   RestrictedContentUiMapper restrictedContentUiMapper =

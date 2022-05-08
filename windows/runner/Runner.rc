@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "hammer_dodgy" "\0"
+            VALUE "FileDescription", "hammer_dodgy_f" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "hammer_dodgy" "\0"
+            VALUE "InternalName", "hammer_dodgy_f" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "hammer_dodgy.exe" "\0"
-            VALUE "ProductName", "hammer_dodgy" "\0"
+            VALUE "OriginalFilename", "hammer_dodgy_f.exe" "\0"
+            VALUE "ProductName", "hammer_dodgy_f" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

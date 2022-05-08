@@ -1,4 +1,4 @@
-import 'package:hammer_dodgy/models/ui/RestrictedContentUiModel.dart';
+import 'package:hammer_dodgy/models/ui/restricted_content_ui_model.dart';
 
 class MovieUiModel {
   final String id;

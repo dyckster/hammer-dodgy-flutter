@@ -1,6 +1,6 @@
-import 'package:hammer_dodgy/models/ui/RestrictedContentUiModel.dart';
+import 'package:hammer_dodgy/models/ui/restricted_content_ui_model.dart';
 
-import '../models/api/RestrictedContentApiModel.dart';
+import '../models/api/restricted_content_api_model.dart';
 
 class RestrictedContentUiMapper {
   RestrictedContentUiModel map(RestrictedContentApiModel restrictedContent) {
@@ -36,7 +36,7 @@ class RestrictedContentUiMapper {
     switch (restrictedContent.restrictedContentType) {
       case "RECENT":
         {
-          return "Movie was released recent";
+          return "Movie was released recently";
         }
       case "ADULT":
         {

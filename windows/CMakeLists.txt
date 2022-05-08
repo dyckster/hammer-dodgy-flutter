@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(hammer_dodgy LANGUAGES CXX)
+project(hammer_dodgy_f LANGUAGES CXX)
 
-set(BINARY_NAME "hammer_dodgy")
+set(BINARY_NAME "hammer_dodgy_f")
 
 cmake_policy(SET CMP0063 NEW)
 

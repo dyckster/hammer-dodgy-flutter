@@ -3,11 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hammer_dodgy/mapper/MovieUiMapper.dart';
-import 'package:hammer_dodgy/models/api/MovieApiModel.dart';
-import 'package:hammer_dodgy/models/ui/MovieUiModel.dart';
-import 'package:hammer_dodgy/usecase/GetMovieDataUseCase.dart';
-import 'package:hammer_dodgy/widgets/RestrictedContentWidget.dart';
+import 'package:hammer_dodgy/mapper/movie_ui_mapper.dart';
+import 'package:hammer_dodgy/models/api/movie_api_model.dart';
+import 'package:hammer_dodgy/models/ui/movie_ui_model.dart';
+import 'package:hammer_dodgy/styles.dart';
+import 'package:hammer_dodgy/usecase/get_movie_data_use_case.dart';
+import 'package:hammer_dodgy/widgets/movie_links_widget.dart';
+import 'package:hammer_dodgy/widgets/restricted_content_widget.dart';
+import 'package:hammer_dodgy/widgets/search_bar_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,8 +63,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   MovieUiMapper movieUiMapper = MovieUiMapper();
 
-  dynamic movieIdController = TextEditingController();
-
   late Future<MovieApiModel> futureMovie;
   late MovieUiModel movie = MovieUiModel.empty();
 
@@ -70,20 +72,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _launchUrl(String url) async {
+    print("Launcing url: $url");
+    if (!await launchUrl(Uri.parse(url))) throw 'Could not launch $url';
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget restrictedContentWidget;
+
     if (movie.restrictedContent.isEmpty) {
       restrictedContentWidget = Container();
     } else {
-      restrictedContentWidget = ListView(
-        scrollDirection: Axis.horizontal,
-        children: List.generate(
-            movie.restrictedContent.length,
-            (index) => Padding(
-                padding: const EdgeInsets.only(left: 32, top: 16),
-                child: RestrictedContentWidget(
-                    restrictedContent: movie.restrictedContent[index]))),
+      restrictedContentWidget = Expanded(
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: List.generate(
+              movie.restrictedContent.length,
+              (index) => Padding(
+                  padding: const EdgeInsets.only(left: 32, top: 16),
+                  child: RestrictedContentWidget(
+                      restrictedContent: movie.restrictedContent[index]))),
+        ),
       );
     }
     Widget backgroundContainer;
@@ -103,30 +113,24 @@ class _MyHomePageState extends State<MyHomePage> {
       Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   colors: [Colors.transparent, Colors.black87]))),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 32, right: 32, top: 64),
-            child: Text(
-              movie.movieName,
-              style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.bold,
-                  textStyle:
-                      const TextStyle(color: Colors.white, fontSize: 32)),
-            ),
-          ),
+              padding: const EdgeInsets.only(left: 32, right: 32, top: 64),
+              child: Text(movie.movieName, style: Styles.movieTitleTextStyle)),
           Padding(
-            padding: const EdgeInsets.only(left: 32, right: 32, top: 12),
-            child: Text(
-              movie.overview,
-              style: GoogleFonts.roboto(
-                  textStyle:
-                      const TextStyle(color: Color(0xD9FFFFFF), fontSize: 14)),
-            ),
+              padding: const EdgeInsets.only(left: 32, right: 32, top: 12),
+              child: Text(
+                movie.overview,
+                style: Styles.movieDescriptionTextStyle,
+              )),
+          MovieLinksWidget(
+            onImdbUrl: () => _launchUrl(movie.imdbLink),
+            onMovieDbUrl: () => _launchUrl("https://www.themoviedb.org/"),
           ),
           restrictedContentWidget,
           Padding(
@@ -141,34 +145,15 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      Row(
-        children: [
-          Expanded(
-            flex: 4,
-            child: TextField(
-              controller: movieIdController,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintStyle: TextStyle(color: Colors.white),
-                hintText: 'Enter Movie Id',
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: ElevatedButton(
-                onPressed: (() {
-                  _getMovieData(movieIdController.text, "en");
-                  futureMovie.then((value) => {
-                        setState(() {
-                          movie = movieUiMapper.map(value);
-                        })
-                      });
-                }),
-                child: const Text("GO")),
-          )
-        ],
+      SearchBarWidget(
+        onPressed: (text) {
+          _getMovieData(text, "en");
+          futureMovie.then((value) => {
+                setState(() {
+                  movie = movieUiMapper.map(value);
+                })
+              });
+        },
       )
     ]));
   }

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hammer_dodgy/models/ui/RestrictedContentUiModel.dart';
+import 'package:hammer_dodgy/models/ui/restricted_content_ui_model.dart';
 
 class RestrictedContentWidget extends StatelessWidget {
   const RestrictedContentWidget({Key? key, required this.restrictedContent})
@@ -15,6 +15,7 @@ class RestrictedContentWidget extends StatelessWidget {
     Widget content = getRectContainer(
         restrictedContent.isBlurred,
         Container(
+          height: 124,
           decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
           child: Container(
             decoration: BoxDecoration(
@@ -39,7 +40,7 @@ class RestrictedContentWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Recent release",
+                            Text(restrictedContent.title,
                                 style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -59,11 +60,8 @@ class RestrictedContentWidget extends StatelessWidget {
           ),
         ));
 
-    return SizedBox(
-      width: 830,
-      child: Stack(
-        children: [content],
-      ),
+    return Stack(
+      children: [content],
     );
   }
 

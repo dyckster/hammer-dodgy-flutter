@@ -1,4 +1,4 @@
-import 'package:hammer_dodgy/models/api/RestrictedContentApiModel.dart';
+import 'package:hammer_dodgy/models/api/restricted_content_api_model.dart';
 
 class MovieApiModel {
   final String id;
@@ -23,6 +23,7 @@ class MovieApiModel {
       required this.restrictedContent});
 
   factory MovieApiModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     List<RestrictedContentApiModel> contentList = <RestrictedContentApiModel>[];
     if (json['restrictedContentList'] != null) {
       json['restrictedContentList'].forEach((v) {
